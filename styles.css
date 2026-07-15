@@ -1,0 +1,222 @@
+/* ============================================================
+   i miss you — live lyric video
+   Black type + big Apple emojis on a pure white void,
+   DOM-rendered, synced to the audio clock. Fills any viewport.
+   ============================================================ */
+
+:root {
+  --bg: #fff;
+  --fg: #000;
+  --mono: "Courier Prime", "Courier New", Courier, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;   /* the whole video lives on white — and it fades in seamlessly from the hub */
+  color: #111;
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------- THE STAGE ---------------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+  z-index: 1;
+  /* the show is hidden until play is pressed */
+  opacity: 0;
+  transition: opacity .25s ease;
+  /* MOBILE: a finger on the stage drags words — it must NOT scroll or zoom the page */
+  touch-action: none;
+  -ms-touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.stage.is-live { opacity: 1; }
+/* stop pull-to-refresh / rubber-band while the show owns the screen */
+body.playing { overscroll-behavior: none; touch-action: none; }
+
+/* holds all cues */
+.cue-layer { position: absolute; inset: 0; }
+
+/* ---------------- THE EMOJI CURSOR ----------------
+   During the show the real cursor is hidden; the video's emoji —
+   ringed in a thin circle — follows the pointer instead. */
+body.playing { cursor: none; }
+body.playing .cue { cursor: none; }
+body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
+.emoji-cursor {
+  position: fixed;
+  left: 0; top: 0;
+  width: 92px; height: 92px;
+  margin: -46px 0 0 -46px;         /* centered on the pointer */
+  border: 2.5px solid #111;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.0);
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0;
+  transform: scale(.6);
+  transition: opacity .22s ease, transform .28s cubic-bezier(.2,1.4,.4,1);
+  will-change: left, top;
+}
+.emoji-cursor.is-on { opacity: 1; transform: scale(1); }
+.emoji-cursor.is-down { transform: scale(.86); }     /* a press squeezes the ring */
+.emoji-cursor img {
+  width: 56px; height: 56px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform .18s ease;
+}
+/* no persistent cursor on touch devices */
+@media (pointer: coarse) { .emoji-cursor { display: none !important; } }
+
+/* while dragging a word */
+body.is-dragging, body.is-dragging .cue { cursor: none; }
+
+/* Each rendered lyric line. Positioned + transformed by the engine. */
+.cue {
+  position: absolute;
+  color: var(--fg);
+  white-space: pre;           /* honour \n only; never auto-wrap */
+  line-height: 0.98;
+  will-change: transform, opacity;
+  transform-origin: center center;
+  pointer-events: auto;         /* grabbable — drag a word to dissolve it */
+  cursor: grab;
+  user-select: none;
+  letter-spacing: 0;
+  /* font-size is set inline (vh) or overridden to a crisp px for fit-scaling */
+}
+
+/* emoji / image cues — the big Apple emojis, cropped from the 4K master */
+.cue.cue-img { line-height: 0; }
+.cue.cue-img img {
+  display: block;
+  height: 100%;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;        /* the .cue wrapper takes the drag */
+}
+
+/* type roles ---------------------------------------------- */
+.cue.r-sans   { font-family: "Helvetica Neue", "Inter", Helvetica, Arial, sans-serif; font-weight: 400; }
+.cue.r-serif  { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+.cue.r-serifIt{ font-family: "Playfair Display", Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; }
+.cue.r-didone { font-family: "Playfair Display", Georgia, serif; font-weight: 900; }
+.cue.r-mono   { font-family: var(--mono), monospace; font-weight: 700; }
+
+/* ---------------- LANDING ---------------- */
+.landing {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #fff;
+  color: #111;
+  display: grid;
+  place-items: center;
+  transition: opacity .5s ease;
+}
+.landing.is-gone { opacity: 0; pointer-events: none; }
+
+.landing__mark { text-align: center; padding: 6vw; }
+.landing__eyebrow {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .34em;
+  font-size: clamp(11px, 1.4vw, 15px);
+  color: #111;
+  margin-left: .34em;
+  margin-bottom: 2.2rem;
+}
+.landing__title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: .01em;
+  font-size: clamp(52px, 14vw, 180px);
+  line-height: .95;
+  color: #111;
+  margin-bottom: 3rem;
+}
+
+.playbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.playbtn:hover { transform: scale(1.08); }
+.playbtn:active { transform: scale(0.96); }
+.playbtn:focus-visible { outline: 2px solid #111; outline-offset: 6px; border-radius: 4px; }
+.playbtn__tri {
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: clamp(22px, 3.6vw, 40px) 0 clamp(22px, 3.6vw, 40px) clamp(34px, 5.6vw, 62px);
+  border-color: transparent transparent transparent #111;
+}
+
+/* transient sync-nudge readout */
+.toast {
+  position: fixed;
+  left: 50%; bottom: 64px;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 8px 14px;
+  background: rgba(0,0,0,.72);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .08em;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity .18s ease;
+  pointer-events: none;
+}
+.toast.is-on { opacity: 1; }
+
+/* ---------------- END CARD ----------------
+   This video ends on white — the card stays white, black type. */
+.endcard {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  background: rgba(255,255,255,0);
+  transition: background .6s ease;
+}
+.endcard.is-visible { background: #fff; }
+.endcard__link, .endcard__btn {
+  background: none; border: none; color: #111;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  font-size: clamp(14px, 2vw, 20px);
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s ease .3s, color .18s ease;
+}
+.endcard__link:hover, .endcard__btn:hover { color: #777; }
+.endcard.is-visible .endcard__link,
+.endcard.is-visible .endcard__btn { opacity: 1; }
+
+[hidden] { display: none !important; }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- iOS Safari tints its status bar + toolbar to match this — the engine live-updates it on every cut -->
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>i miss you — clay and kelsy</title>
+
+  <!-- Fonts: brand mono (Courier Prime) + the faces used in the video -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:ital,opsz,wght@0,14..32,200..900;1,14..32,200..900&family=Monsieur+La+Doulaise&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Special+Elite&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body>
+  <!-- ============ THE SHOW ============ -->
+  <div id="stage" class="stage" aria-hidden="true">
+    <div id="cueLayer" class="cue-layer"></div>
+  </div>
+
+  <!-- the cursor: the video's emoji ringed in a circle (desktop pointer only) -->
+  <div id="emojiCursor" class="emoji-cursor" aria-hidden="true">
+    <img id="emojiCursorImg" src="" alt="" draggable="false" />
+  </div>
+
+  <!-- ============ LANDING ============ -->
+  <section id="landing" class="landing">
+    <div class="landing__mark">
+      <div class="landing__eyebrow">clay and kelsy</div>
+      <h1 class="landing__title">i miss you</h1>
+      <button id="playBtn" class="playbtn" type="button" aria-label="Play">
+        <span class="playbtn__tri" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- transient readout for the audio-sync nudge -->
+  <div id="toast" class="toast" aria-hidden="true"></div>
+
+  <!-- ============ END CARD ============ -->
+  <section id="endcard" class="endcard" hidden>
+    <a id="goBack" class="endcard__link" href="https://clayandkelsy.com/i-am/" target="_top" rel="noopener">[ go back ]</a>
+    <button id="replayBtn" class="endcard__btn" type="button">[ replay ]</button>
+  </section>
+
+  <!-- audio clock -->
+  <audio id="song" src="assets/i-miss-you.mp3" preload="auto"></audio>
+
+  <script src="cues.js?v=5"></script>
+  <script src="app.js?v=5"></script>
+</body>
+</html>

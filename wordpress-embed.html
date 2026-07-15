@@ -1,0 +1,37 @@
+<!-- ============================================================
+     i miss you — clay and kelsy · live lyric video
+     Paste this whole block into a WordPress "Custom HTML" block.
+
+     HOW THE iOS BARS WORK: Safari paints its status-bar area and
+     bottom-toolbar surround from the TOP page's html/body background.
+     This video lives on white start to finish, so the <style> pins
+     the parent white; the <script> still listens for color messages
+     from the player (same protocol as the other lyric videos) in
+     case a future edit adds dark moments.
+     ============================================================ -->
+<style>
+  html, body { background: #fff !important; transition: none !important; }
+</style>
+<div id="imy-embed" style="position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;height:100svh;height:100dvh;background:#fff;overflow:hidden;">
+  <iframe
+    src="https://clayburton.github.io/i-miss-you-live/"
+    title="i miss you — clay and kelsy"
+    loading="lazy"
+    allow="fullscreen; autoplay"
+    style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block;">
+  </iframe>
+</div>
+<script>
+(function () {
+  var wrap = document.getElementById('imy-embed');
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://clayburton.github.io') return;   // only trust the lyric video
+    var d = e.data;
+    if (!d || d.iam !== 'bg' || typeof d.color !== 'string') return;
+    if (!/^#[0-9a-fA-F]{3,8}$/.test(d.color)) return;          // colors only
+    document.documentElement.style.setProperty('background', d.color, 'important');
+    document.body.style.setProperty('background', d.color, 'important');
+    if (wrap) wrap.style.setProperty('background', d.color, 'important');
+  });
+}());
+</script>
