@@ -55,28 +55,23 @@ body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
 .emoji-cursor {
   position: fixed;
   left: 0; top: 0;
-  width: 92px; height: 92px;
-  margin: -46px 0 0 -46px;         /* centered on the pointer */
-  border: 2.5px solid #111;
-  border-radius: 50%;
+  width: 76px; height: 76px;
+  margin: -38px 0 0 -38px;         /* centered on the pointer */
   display: grid;
   place-items: center;
-  background: rgba(255,255,255,.0);
   pointer-events: none;
   z-index: 60;
-  opacity: 0;
-  transform: scale(.6);
-  transition: opacity .22s ease, transform .28s cubic-bezier(.2,1.4,.4,1);
+  opacity: 0;                       /* cuts in and out WITH the video — no fade */
   will-change: left, top;
 }
-.emoji-cursor.is-on { opacity: 1; transform: scale(1); }
-.emoji-cursor.is-down { transform: scale(.86); }     /* a press squeezes the ring */
+.emoji-cursor.is-on { opacity: 1; }
+.emoji-cursor.is-down img { filter: brightness(.92); }
 .emoji-cursor img {
-  width: 56px; height: 56px;
+  width: 68px; height: 68px;
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
-  transition: transform .18s ease;
+  will-change: transform;           /* beat pulse + sample-pop set scale from JS */
 }
 /* no persistent cursor on touch devices */
 @media (pointer: coarse) { .emoji-cursor { display: none !important; } }

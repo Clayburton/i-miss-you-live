@@ -40,16 +40,44 @@
   const mounted = new Map();                // cueIndex -> element
 
   /* ---------- the emoji cursor ----------
-     The video's current emoji rides inside a thin ring where the
-     pointer is. Every emoji cue that plays hands its face to the
-     cursor, so the cursor always wears "the emoji of the video". */
-  const CURSOR_DEFAULT = "assets/emoji/rose.png";
-  let cursorSrc = null;
-  cursorImg.src = CURSOR_DEFAULT;   // never show an empty ring, even in debug freezes
-  function setCursorEmoji(src) {
+     The cursor IS the video's current emoji — it cuts in and out in
+     hard sync with the show (renderAt drives it every frame). No emoji
+     on screen -> no cursor. Each new emoji pops in ("trap sample"
+     dilate), and it pulses on the beat (BEATS from cues.js). */
+  let cursorSrc = null, cursorPopT = -9, lastBeatT = -9, beatIdx = 0;
+  function setCursorEmoji(src, t) {
     if (src === cursorSrc) return;
     cursorSrc = src;
-    cursorImg.src = src;
+    if (src) { cursorImg.src = src; cursorPopT = t; }
+  }
+  function cursorFrame(t) {
+    // wears exactly the emoji that's on screen right now
+    let src = null;
+    for (let i = 0; i < CUES.length; i++) {
+      const c = CUES[i];
+      if (c.emoji === false) continue;
+      if (t >= c.s && t < c.e) {
+        if (c.frames) {
+          const a0 = c.frameAnchor != null ? c.frameAnchor : c.s;
+          const k = Math.floor((t - a0) / (c.frameDur || 0.167)) % c.frames.length;
+          src = c.frames[(k + c.frames.length) % c.frames.length];
+        } else if (c.img) src = c.img;
+      }
+    }
+    setCursorEmoji(src, t);
+    const show = !!src && mouse.inside && running;
+    cursorEl.classList.toggle("is-on", show);
+    if (!show) return;
+    // beat clock (BEATS is sorted; walk the index, handle seeks)
+    if (typeof BEATS !== "undefined" && BEATS.length) {
+      if (beatIdx >= BEATS.length || (beatIdx > 0 && BEATS[beatIdx - 1] > t)) beatIdx = 0;
+      while (beatIdx < BEATS.length && BEATS[beatIdx] <= t) { lastBeatT = BEATS[beatIdx]; beatIdx++; }
+    }
+    // classic sample dilate: pop on every new emoji + a pulse on every beat
+    const pop  = Math.max(0, 1 - (t - cursorPopT) / 0.16);
+    const beat = Math.max(0, 1 - (t - lastBeatT) / 0.20);
+    const s = 1 + 0.45 * pop * pop + 0.16 * beat * beat;
+    cursorImg.style.transform = "scale(" + s.toFixed(3) + ")";
   }
   function moveCursor() {
     cursorEl.style.left = mouse.x + "px";
@@ -92,18 +120,15 @@
     el.style.left = (cue.x != null ? cue.x : 50) + "%";
     el.style.top  = (cue.y != null ? cue.y : 50) + "%";
 
-    if (cue.img) {
+    if (cue.img || cue.frames) {
       el.className = "cue cue-img";
       const im = document.createElement("img");
-      im.src = cue.img;
+      im.src = cue.frames ? cue.frames[0] : cue.img;
       im.alt = cue.alt || "";
       im.draggable = false;
       el.appendChild(im);
       // emoji size = % of viewport height, like text
       el.style.height = (cue.size || 14) + "vh";
-      // the cursor wears the video's emoji — but only from moments that hold
-      // (the rapid strobes would make the cursor flicker like mad)
-      if (cue.emoji !== false && (cue.e - cue.s) >= 0.7) setCursorEmoji(cue.img);
     } else {
       el.className = "cue " + (ROLE_CLASS[cue.role] || "r-sans");
       el.textContent = cue.text;
@@ -128,8 +153,26 @@
 
     cueLayer.appendChild(el);
     if (cue.fit) applyFit(el, cue);       // re-fit now it's in the DOM
+    clampWidth(el, cue);                  // vh sizing can overflow a narrow phone
     mounted.set(idx, el);
     return el;
+  }
+
+  // a cue sized in vh (matched to the 16:9 master) must never spill off a
+  // narrow viewport — scale it down to fit, keeping desktop untouched
+  function clampWidth(el, cue) {
+    if (cue.fit) return;                          // fit cues already clamp
+    const W = stage.clientWidth;
+    if (!W) return;
+    const w = el.offsetWidth;
+    if (w > 0.94 * W) {
+      if (cue.img || cue.frames) {
+        el.style.height = ((cue.size || 14) * 0.94 * W / w) + "vh";
+      } else {
+        const fs = parseFloat(el.style.fontSize);   // "NNvh" — mount sizes text in vh
+        el.style.fontSize = (fs * 0.94 * W / w) + "vh";
+      }
+    }
   }
 
   function envelope(cue, localT, life) {
@@ -147,6 +190,17 @@
     const life = cue.e - cue.s;
     const localT = t - cue.s;
     const k = Math.min(1, Math.max(0, localT / life));
+
+    // frame-set animation (moon phases, earth spin, flickers): swap the image on a fixed step
+    if (cue.frames) {
+      const a0 = cue.frameAnchor != null ? cue.frameAnchor : cue.s;
+      let k = Math.floor((t - a0) / (cue.frameDur || 0.167)) % cue.frames.length;
+      k = (k + cue.frames.length) % cue.frames.length;
+      if (el.dataset.fk !== String(k)) {
+        el.dataset.fk = k;
+        el.querySelector("img").src = cue.frames[k];
+      }
+    }
 
     // font cycling ("OFF THE DEEP END"): swap the family on a fixed beat
     if (cue.fontCycle) {
@@ -221,6 +275,8 @@
       if (active) update(i, c, t);
       else if (mounted.has(i)) unmount(i);
     }
+
+    cursorFrame(t);   // the cursor cuts in and out with the video
   }
 
   /* ---------- main loop ---------- */
@@ -231,13 +287,20 @@
     requestAnimationFrame(frame);
   }
 
-  /* ---------- resize: re-render so fit-scaled cues track the viewport ---------- */
-  window.addEventListener("resize", function () {
+  /* ---------- resize: remount so every cue re-measures against the new viewport ---------- */
+  function remountAll() {
+    mounted.forEach(function (el) { el.remove(); });
+    mounted.clear();
     if (running) renderAt(lastT);
-  });
+  }
+  window.addEventListener("resize", remountAll);
   if (window.ResizeObserver) {
+    let lastW = 0;
     new ResizeObserver(function () {
-      if (running && stage.clientWidth) renderAt(lastT);
+      if (running && stage.clientWidth && stage.clientWidth !== lastW) {
+        lastW = stage.clientWidth;
+        remountAll();
+      }
     }).observe(stage);
   }
   // web fonts load async — re-measure fit cues once the real glyphs are ready
@@ -257,8 +320,7 @@
     document.body.classList.add("playing");
     broadcastBg("#ffffff");
     running = true;
-    setCursorEmoji(CURSOR_DEFAULT);
-    if (mouse.inside) { moveCursor(); cursorEl.classList.add("is-on"); }
+    if (mouse.inside) moveCursor();
     audio.currentTime = 0;
     const p = audio.play();
     if (p && p.catch) p.catch(function (e) { console.warn("play blocked:", e); });
@@ -282,8 +344,7 @@
     stage.classList.add("is-live");
     document.body.classList.add("playing");
     running = true;
-    setCursorEmoji(CURSOR_DEFAULT);
-    if (mouse.inside) { moveCursor(); cursorEl.classList.add("is-on"); }
+    if (mouse.inside) moveCursor();
     for (const k in dragState) delete dragState[k];
     mounted.forEach(function (el) { delete el.dataset.dead; });
     audio.load();                 // reliably rewinds to 0 even where seeking is blocked
@@ -319,7 +380,7 @@
   /* ---------- pointer: emoji cursor follows; grab a word and drag it ---------- */
   window.addEventListener("pointermove", function (e) {
     mouse.x = e.clientX; mouse.y = e.clientY; mouse.inside = true;
-    if (running) { moveCursor(); cursorEl.classList.add("is-on"); }
+    if (running) moveCursor();
     if (dragIdx != null) {
       dragState[dragIdx] = { dx: dragBase.x + (e.clientX - dragFrom.x), dy: dragBase.y + (e.clientY - dragFrom.y) };
     }
@@ -331,7 +392,7 @@
   stage.addEventListener("pointerdown", function (e) {
     if (!running) return;
     mouse.x = e.clientX; mouse.y = e.clientY; mouse.inside = true;
-    moveCursor(); cursorEl.classList.add("is-on", "is-down");
+    moveCursor(); cursorEl.classList.add("is-down");
     if (!e.target.closest) return;
     const cel = e.target.closest(".cue");
     if (!cel || cel.dataset.idx == null) return;
