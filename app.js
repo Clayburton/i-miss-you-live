@@ -33,10 +33,7 @@
   // master (measured by cross-correlation), so the default is 0. Tunable with [ ].
   let syncOffset = parseFloat(localStorage.getItem("imy_sync") || "0");
   // pointer interaction state
-  const dragState = {};                              // idx -> {dx,dy} while a word is dragged
   const mouse = { x: 0, y: 0, inside: false };
-  let dragIdx = null, dragBase = { x: 0, y: 0 }, dragFrom = { x: 0, y: 0 };
-  const KILL_DIST = 160;                             // drag this far (px) → the cue dissolves
   const mounted = new Map();                // cueIndex -> element
 
   /* ---------- the emoji cursor ----------
@@ -196,12 +193,7 @@
       }
     }
 
-    // opacity — dragging a cue fades it; flung far enough it's gone
-    let op = envelope(cue, localT, life);
-    const ds = dragState[idx];
-    if (ds && dragIdx === idx) op *= Math.max(0.25, 1 - Math.hypot(ds.dx, ds.dy) / (KILL_DIST * 1.5));
-    if (el.dataset.dead) { op = 0; el.style.pointerEvents = "none"; }
-    el.style.opacity = op;
+    el.style.opacity = envelope(cue, localT, life);
 
     if (cue.fit) applyFit(el, cue);
     let scale = 1;
@@ -212,9 +204,7 @@
     if (cue.spin) rot += 360 * ((localT / cue.spin) % 1);
     const sx = (cue.stretch || 1) * (cue.flip ? -1 : 1);   // stretch = condensed type; flip = mirrored footsteps
     const stretch = sx !== 1 ? " scaleX(" + sx + ")" : "";
-    const dragT = ds ? "translate(" + ds.dx + "px," + ds.dy + "px) " : "";
     el.style.transform =
-      dragT +
       "translate(" + ax + "%," + ay + "%)" +
       " rotate(" + rot + "deg)" +
       " scale(" + scale.toFixed(4) + ")" + stretch;
@@ -223,8 +213,6 @@
   function unmount(idx) {
     const el = mounted.get(idx);
     if (el) { el.remove(); mounted.delete(idx); }
-    delete dragState[idx];
-    if (dragIdx === idx) dragIdx = null;
   }
 
   /* ---------- keep the browser chrome (iOS status bar / toolbar) matching the show ----------
@@ -258,6 +246,7 @@
     }
 
     cursorFrame(t);   // the cursor cuts in and out with the video
+    trailFrame(t);    // and the viewer's drawing comes home in the last chorus
   }
 
   /* ---------- main loop ---------- */
@@ -337,6 +326,7 @@
     broadcastBg("#ffffff");
     running = true;
     if (mouse.inside) moveCursor();
+    resetTrail();
     audio.currentTime = 0;
     const p = audio.play();
     if (p && p.catch) p.catch(function (e) { console.warn("play blocked:", e); });
@@ -361,8 +351,7 @@
     document.body.classList.add("playing");
     running = true;
     if (mouse.inside) moveCursor();
-    for (const k in dragState) delete dragState[k];
-    mounted.forEach(function (el) { delete el.dataset.dead; });
+    resetTrail();
     audio.load();                 // reliably rewinds to 0 even where seeking is blocked
     const p = audio.play();
     if (p && p.catch) p.catch(function () {});
@@ -393,13 +382,95 @@
     }
   });
 
-  /* ---------- pointer: emoji cursor follows; grab a word and drag it ---------- */
+  /* ---------- draw with the song ('80s video-delay trail) ----------
+     While an emoji is live, click/touch and drag: the emoji echoes
+     behind the pointer in evenly spaced stamps that slowly dissolve.
+     Nothing is lost — every stamp is remembered, drifts back in one
+     by one through the last chorus, and the song ends on everything
+     you drew. */
+  const trailLayer = document.getElementById("trailLayer");
+  const RETURN_START = 175.91;              // "yea I MISS YOU" — the drawings start coming home
+  const RETURN_END   = 207.5;               // all home before the fire / the rabbit
+  const STAMP_STEP   = 30;                  // px of travel between stamps (smooth, even stroke)
+  const FADE_HOLD_MS = 500;                 // a stamp holds a beat before it starts to dissolve
+  const MAX_DRAWN    = 600;
+  const drawn = [];                         // {src,x,y,size,rot} in stage-% — the viewer's drawing
+  let inking = false, lastInk = null;
+
+  function placeStamp(rec, cls) {
+    const el = document.createElement("img");
+    el.className = "trail-stamp" + (cls ? " " + cls : "");
+    el.src = rec.src;
+    el.style.left = rec.x + "%";
+    el.style.top = rec.y + "%";
+    el.style.height = rec.size + "vh";
+    el.style.setProperty("--r", rec.rot + "deg");
+    el.style.transform = "translate(-50%,-50%) rotate(" + rec.rot + "deg)";
+    el.draggable = false;
+    trailLayer.appendChild(el);
+    return el;
+  }
+
+  function stampAt(px, py, t) {
+    if (!cursorSrc) return;                 // only draw with a live emoji
+    const W = stage.clientWidth, H = stage.clientHeight;
+    if (!W || !H) return;
+    const rec = {
+      src: cursorSrc,
+      x: +(px / W * 100).toFixed(2),
+      y: +(py / H * 100).toFixed(2),
+      size: +(8.6 + Math.random() * 1.2).toFixed(2),
+      rot: +((Math.random() - 0.5) * 14).toFixed(1),
+      back: RETURN_START + Math.random() * (RETURN_END - RETURN_START),
+      el: null,
+    };
+    if (drawn.length >= MAX_DRAWN) drawn.shift();
+    drawn.push(rec);
+    const el = placeStamp(rec);
+    if (t >= RETURN_START) {
+      rec.el = el;                          // drawn in the finale — it simply stays
+    } else {
+      setTimeout(function () { el.classList.add("is-fading"); }, FADE_HOLD_MS);
+      setTimeout(function () { el.remove(); }, FADE_HOLD_MS + 3200);
+    }
+  }
+
+  // the drawings come home: mount each remembered stamp at its return time
+  function trailFrame(t) {
+    for (let i = 0; i < drawn.length; i++) {
+      const r = drawn[i];
+      if (!r.el && t >= r.back && t >= RETURN_START) {
+        r.el = placeStamp(r, "is-back");
+      } else if (r.el && (t < r.back || t < RETURN_START)) {
+        r.el.remove(); r.el = null;         // seeking backwards keeps the story consistent
+      }
+    }
+  }
+
+  function resetTrail() {
+    drawn.length = 0;
+    inking = false; lastInk = null;
+    trailLayer.textContent = "";
+  }
+
+  function inkTo(px, py) {
+    const t = clockOverride != null ? clockOverride : Math.max(0, audio.currentTime + syncOffset);
+    if (!lastInk) { stampAt(px, py, t); lastInk = { x: px, y: py }; return; }
+    let dx = px - lastInk.x, dy = py - lastInk.y;
+    let d = Math.hypot(dx, dy);
+    while (d >= STAMP_STEP) {               // even spacing however fast the hand moves
+      lastInk.x += dx / d * STAMP_STEP;
+      lastInk.y += dy / d * STAMP_STEP;
+      stampAt(lastInk.x, lastInk.y, t);
+      dx = px - lastInk.x; dy = py - lastInk.y;
+      d = Math.hypot(dx, dy);
+    }
+  }
+
   window.addEventListener("pointermove", function (e) {
     mouse.x = e.clientX; mouse.y = e.clientY; mouse.inside = true;
     if (running) moveCursor();
-    if (dragIdx != null) {
-      dragState[dragIdx] = { dx: dragBase.x + (e.clientX - dragFrom.x), dy: dragBase.y + (e.clientY - dragFrom.y) };
-    }
+    if (inking && running) inkTo(e.clientX, e.clientY);
   });
   window.addEventListener("mouseout", function (e) {
     if (!e.relatedTarget) { mouse.inside = false; cursorEl.classList.remove("is-on"); }
@@ -409,32 +480,17 @@
     if (!running) return;
     mouse.x = e.clientX; mouse.y = e.clientY; mouse.inside = true;
     moveCursor(); cursorEl.classList.add("is-down");
-    if (!e.target.closest) return;
-    const cel = e.target.closest(".cue");
-    if (!cel || cel.dataset.idx == null) return;
-    dragIdx = +cel.dataset.idx;
-    dragFrom = { x: e.clientX, y: e.clientY };
-    const cur = dragState[dragIdx];
-    dragBase = cur ? { x: cur.dx, y: cur.dy } : { x: 0, y: 0 };
-    document.body.classList.add("is-dragging");
+    inking = true; lastInk = null;
+    inkTo(e.clientX, e.clientY);
     e.preventDefault();
   });
   window.addEventListener("pointerup", function () {
     cursorEl.classList.remove("is-down");
-    if (dragIdx == null) return;
-    const ds = dragState[dragIdx], el = mounted.get(dragIdx);
-    if (ds && Math.hypot(ds.dx, ds.dy) > KILL_DIST) {
-      if (el) { el.dataset.dead = "1"; el.style.pointerEvents = "none"; }  // flung far → dissolve
-    }
-    // otherwise the word STAYS exactly where you dropped it (no snap-back)
-    dragIdx = null;
-    document.body.classList.remove("is-dragging");
+    inking = false; lastInk = null;
   });
-  // touch drag interrupted by a system gesture → don't leave a word stuck to the finger
   window.addEventListener("pointercancel", function () {
     cursorEl.classList.remove("is-down");
-    dragIdx = null;
-    document.body.classList.remove("is-dragging");
+    inking = false; lastInk = null;
   });
 
   // expose a tiny hook for automated verification / debugging

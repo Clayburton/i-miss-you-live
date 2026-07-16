@@ -76,8 +76,6 @@ body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
 /* no persistent cursor on touch devices */
 @media (pointer: coarse) { .emoji-cursor { display: none !important; } }
 
-/* while dragging a word */
-body.is-dragging, body.is-dragging .cue { cursor: none; }
 
 /* Each rendered lyric line. Positioned + transformed by the engine. */
 .cue {
@@ -87,12 +85,26 @@ body.is-dragging, body.is-dragging .cue { cursor: none; }
   line-height: 0.98;
   will-change: transform, opacity;
   transform-origin: center center;
-  pointer-events: auto;         /* grabbable — drag a word to dissolve it */
-  cursor: grab;
+  pointer-events: none;         /* the stage is a drawing surface — cues are untouchable */
   user-select: none;
   letter-spacing: 0;
   /* font-size is set inline (vh) or overridden to a crisp px for fit-scaling */
 }
+
+/* ---------------- THE TRAIL (drag-to-draw) ----------------
+   Drag while an emoji is live and it echoes behind the pointer —
+   the classic '80s video-delay trail. Strokes fade away slowly,
+   then everything you ever drew returns through the last chorus. */
+.trail-layer { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.trail-stamp {
+  position: absolute;
+  pointer-events: none;
+  will-change: opacity, transform;
+  opacity: .92;
+  transition: opacity 3s ease-in, transform 3s ease-in;
+}
+.trail-stamp.is-fading { opacity: 0; transform: translate(-50%,-50%) rotate(var(--r,0deg)) scale(.84) translateY(6px); }
+.trail-stamp.is-back { opacity: .92; transition: opacity .18s ease-out; }
 
 /* emoji / image cues — the big Apple emojis, cropped from the 4K master */
 .cue.cue-img { line-height: 0; }
@@ -102,7 +114,7 @@ body.is-dragging, body.is-dragging .cue { cursor: none; }
   width: auto;
   user-select: none;
   -webkit-user-drag: none;
-  pointer-events: none;        /* the .cue wrapper takes the drag */
+  pointer-events: none;
 }
 
 /* type roles ---------------------------------------------- */
@@ -200,7 +212,8 @@ body.is-dragging, body.is-dragging .cue { cursor: none; }
   background: rgba(255,255,255,0);
   transition: background .6s ease;
 }
-.endcard.is-visible { background: #fff; }
+/* soft veil — the viewer's finished drawing stays visible underneath */
+.endcard.is-visible { background: rgba(255,255,255,.45); }
 .endcard__link, .endcard__btn {
   background: none; border: none; color: #111;
   font-family: var(--mono);
