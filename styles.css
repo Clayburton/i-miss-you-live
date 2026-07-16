@@ -43,8 +43,9 @@ html, body {
 /* stop pull-to-refresh / rubber-band while the show owns the screen */
 body.playing { overscroll-behavior: none; touch-action: none; }
 
-/* holds all cues */
-.cue-layer { position: absolute; inset: 0; }
+/* holds all cues — always in front of the viewer's drawing, so the
+   lyrics and the big center emojis stay readable over the trail */
+.cue-layer { position: absolute; inset: 0; z-index: 3; }
 
 /* ---------------- THE EMOJI CURSOR ----------------
    During the show the real cursor is hidden; the video's emoji —
