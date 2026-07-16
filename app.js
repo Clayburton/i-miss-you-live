@@ -29,9 +29,9 @@
 
   let running = false;
   let clockOverride = null;                 // debug: render a fixed timestamp
-  // visual-vs-audio sync nudge (seconds). MP3 adds ~20ms of encoder padding, so the
-  // heard audio lags the clock slightly; render a touch behind to match. Tunable with [ ].
-  let syncOffset = parseFloat(localStorage.getItem("imy_sync") || "-0.02");
+  // visual-vs-audio sync nudge (seconds). This mp3 decodes sample-aligned with the
+  // master (measured by cross-correlation), so the default is 0. Tunable with [ ].
+  let syncOffset = parseFloat(localStorage.getItem("imy_sync") || "0");
   // pointer interaction state
   const dragState = {};                              // idx -> {dx,dy} while a word is dragged
   const mouse = { x: 0, y: 0, inside: false };
@@ -40,18 +40,11 @@
   const mounted = new Map();                // cueIndex -> element
 
   /* ---------- the emoji cursor ----------
-     The cursor IS the video's current emoji — it cuts in and out in
-     hard sync with the show (renderAt drives it every frame). No emoji
-     on screen -> no cursor. Each new emoji pops in ("trap sample"
-     dilate), and it pulses on the beat (BEATS from cues.js). */
-  let cursorSrc = null, cursorPopT = -9, lastBeatT = -9, beatIdx = 0;
-  function setCursorEmoji(src, t) {
-    if (src === cursorSrc) return;
-    cursorSrc = src;
-    if (src) { cursorImg.src = src; cursorPopT = t; }
-  }
+     The cursor IS the video's current emoji — nothing more. It cuts in
+     and out in hard sync with the show (renderAt drives it every frame);
+     no emoji on screen -> no cursor. */
+  let cursorSrc = null;
   function cursorFrame(t) {
-    // wears exactly the emoji that's on screen right now
     let src = null;
     for (let i = 0; i < CUES.length; i++) {
       const c = CUES[i];
@@ -64,20 +57,8 @@
         } else if (c.img) src = c.img;
       }
     }
-    setCursorEmoji(src, t);
-    const show = !!src && mouse.inside && running;
-    cursorEl.classList.toggle("is-on", show);
-    if (!show) return;
-    // beat clock (BEATS is sorted; walk the index, handle seeks)
-    if (typeof BEATS !== "undefined" && BEATS.length) {
-      if (beatIdx >= BEATS.length || (beatIdx > 0 && BEATS[beatIdx - 1] > t)) beatIdx = 0;
-      while (beatIdx < BEATS.length && BEATS[beatIdx] <= t) { lastBeatT = BEATS[beatIdx]; beatIdx++; }
-    }
-    // classic sample dilate: pop on every new emoji + a pulse on every beat
-    const pop  = Math.max(0, 1 - (t - cursorPopT) / 0.16);
-    const beat = Math.max(0, 1 - (t - lastBeatT) / 0.20);
-    const s = 1 + 0.45 * pop * pop + 0.16 * beat * beat;
-    cursorImg.style.transform = "scale(" + s.toFixed(3) + ")";
+    if (src !== cursorSrc) { cursorSrc = src; if (src) cursorImg.src = src; }
+    cursorEl.classList.toggle("is-on", !!src && mouse.inside && running);
   }
   function moveCursor() {
     cursorEl.style.left = mouse.x + "px";
@@ -311,8 +292,43 @@
     });
   }
 
+  /* ---------- preload: every emoji is fetched AND decoded before the show ----------
+     Without this, each image loads at the moment its cue mounts — every emoji
+     appears late on first play and swaps flash the previous frame. The play
+     arrow stays dimmed until the deck is fully warm. */
+  const PRELOADED = new Map();              // src -> decoded HTMLImageElement (held so nothing is evicted)
+  let assetsReady = false;
+  (function preload() {
+    const srcs = new Set();
+    for (const c of CUES) {
+      if (c.img) srcs.add(c.img);
+      if (c.frames) c.frames.forEach(function (f) { srcs.add(f); });
+    }
+    let done = 0;
+    const total = srcs.size;
+    playBtn.classList.add("is-loading");
+    const tick = function () {
+      done++;
+      playBtn.style.setProperty("--load", (done / total));
+      if (done >= total) {
+        assetsReady = true;
+        playBtn.classList.remove("is-loading");
+      }
+    };
+    srcs.forEach(function (s) {
+      const im = new Image();
+      PRELOADED.set(s, im);
+      // count on load (bytes are in); decode() is best-effort — browsers
+      // defer decode promises in hidden tabs, so never gate on it
+      im.onload = function () { tick(); if (im.decode) im.decode().catch(function () {}); };
+      im.onerror = tick;
+      im.src = s;
+    });
+  })();
+
   /* ---------- flow ---------- */
   function start() {
+    if (!assetsReady) return;               // the show only starts fully warm
     landing.classList.add("is-gone");
     setTimeout(function () { landing.hidden = true; }, 500);
     stage.classList.add("is-live");

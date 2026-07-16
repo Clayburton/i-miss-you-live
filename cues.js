@@ -461,7 +461,7 @@ const CUES = [
   { s: 193.23, e: 194.03, text: "?", role: "sans", size: 14, y: 49, weight: 700 },
   { s: 194.03, e: 194.19, img: E+"foot.png", size: 18.4 },
   { s: 194.19, e: 194.26, img: E+"foot.png", size: 11.5, flip: true },
-  { s: 194.26, e: 194.33, img: E+"foot.png", size: 8.0 },
+  { s: 194.26, e: 194.36, img: E+"foot.png", size: 8.0 },
   { s: 194.36, e: 196.20, text: "i miss you", role: "serifIt", size: 6.2, y: 52 },
   { s: 196.20, e: 196.90, img: E+"hourglass.png", size: 19.5 },
 

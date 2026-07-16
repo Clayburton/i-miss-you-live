@@ -153,8 +153,10 @@ body.is-dragging, body.is-dragging .cue { cursor: none; }
   background: none;
   border: none;
   cursor: pointer;
-  transition: transform .18s ease, opacity .18s ease;
+  transition: transform .18s ease, opacity .3s ease;
 }
+/* while the emoji deck preloads, the arrow breathes at low opacity */
+.playbtn.is-loading { opacity: calc(0.18 + 0.5 * var(--load, 0)); }
 .playbtn:hover { transform: scale(1.08); }
 .playbtn:active { transform: scale(0.96); }
 .playbtn:focus-visible { outline: 2px solid #111; outline-offset: 6px; border-radius: 4px; }

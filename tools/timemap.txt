@@ -1,0 +1,602 @@
+# i miss you — time map
+# Every visible element in the 4K master (per-frame content-signature segmentation,
+# 29.97fps) with the cue that renders it. frame = source frame index.
+#
+#  source s  source e    f0    f1   rendered by
+
+    0.000     0.834     0    24   "i miss you" + "clay and kelsy"
+    0.834     1.335    25    39   "made by clay"
+    1.768     2.769    53    82   "i stopped caring"
+    2.769     3.470    83   103   plant.png
+    3.470     3.871   104   115   dash.png
+    3.871     4.972   116   148   leaf.png
+    4.972     5.372   149   160   fallen.png
+    5.372     5.772   161   172   web.png
+    5.772     6.039   173   180   spider.png
+    6.039     7.241   181   216   "didn't think i could"
+    7.241     7.941   217   237   pensive.png
+    7.941     8.775   238   262   "i stopped daring"
+    8.775     9.476   263   283   light.png
+    9.476     9.843   284   294   car-side.png
+    9.843    10.978   295   328   car-front.png
+   10.978    11.712   329   350   flag.png
+   11.712    12.112   351   362   trophy.png
+   12.112    13.213   363   395   "never thought i would"
+   13.914    15.482   417   463   "i didn't show up"
+   15.482    15.782   464   472   calendar.png
+   15.782    16.083   473   481   cross-red.png
+   16.083    16.383   482   490   calendar.png
+   16.383    16.683   491   499   cross-red.png
+   16.683    16.984   500   508   calendar.png
+   16.984    17.184   509   514   cross-red.png
+   17.184    18.051   515   540   "cause i"
+   18.051    20.554   541   615   "knew that you\nwould notice"
+   20.721    22.656   621   678   "thought that you’d\ncall me back"
+   22.656    22.990   679   688   "but"
+   22.990    23.724   689   710   phone-call.png
+   23.724    24.224   711   725   nope.png
+   24.825    25.325   744   758   you-didnt-nope.png
+   25.325    25.993   759   778   "YOU DIDN’T"
+   25.993    26.693   779   799   you-didnt-nope.png
+   26.693    28.996   800   868   "ALWAYS THE CALM\nBEFORE THE STORM"
+   28.996    31.632   869   947   wind-face.png
+   31.632    31.999   948   958   storm-rain.png
+   31.999    32.099   959   961   zap.png
+   32.199    32.299   965   967   zap.png
+   32.399    32.499   971   973   zap.png
+   32.599    32.699   977   979   zap.png
+   32.699    35.302   980  1057   "I HATE DISRUPTING\nYOU ANYMORE"
+   35.302    35.736  1058  1070   "(STOP)"
+   35.736    35.836  1071  1073   anim:moon0×8
+   35.836    35.936  1074  1076   anim:moon0×8
+   35.936    36.036  1077  1079   anim:moon0×8
+   36.036    36.136  1080  1082   anim:moon0×8
+   36.136    36.236  1083  1085   anim:moon0×8
+   36.236    36.336  1086  1088   anim:moon0×8
+   36.336    36.436  1089  1091   anim:moon0×8
+   36.436    36.536  1092  1094   anim:moon0×8
+   36.536    36.637  1095  1097   anim:moon0×8
+   36.637    36.737  1098  1100   anim:moon0×8
+   36.737    36.837  1101  1103   anim:moon0×8
+   36.837    36.937  1104  1106   anim:moon0×8
+   36.937    37.037  1107  1109   anim:moon0×8
+   37.037    37.137  1110  1112   anim:moon0×8
+   37.137    37.237  1113  1115   anim:moon0×8
+   37.237    37.337  1116  1118   anim:moon0×8
+   37.337    37.437  1119  1121   anim:moon0×8
+   37.437    37.538  1122  1124   anim:moon0×8
+   37.538    37.638  1125  1127   anim:moon0×8
+   37.638    37.738  1128  1130   anim:moon0×8
+   37.738    38.538  1131  1154   "i’d tell you"
+   38.538    39.873  1155  1194   "“it’d be alright”"
+   39.873    40.207  1195  1204   rose.png
+   40.207    41.008  1205  1228   rose.png + "(its all right)"
+   41.008    41.375  1229  1239   heart-black.png + "(its all right)"
+   41.375    41.675  1240  1248   crescent.png + "(its all right)"
+   41.675    41.742  1249  1250   crescent.png + "(its all right)"
+   41.742    42.843  1251  1283   milkyway.png
+   42.843    43.610  1284  1306   sparkles.png
+   43.610    43.977  1307  1317   dizzy-star.png
+   43.977    45.479  1318  1362   "but i still\nmiss you"
+   45.479    45.879  1363  1374   heart-black.png
+   45.879    46.980  1375  1407   broken-black.png
+   46.980    47.714  1408  1429   "every night"
+   47.714    47.881  1430  1434   phone.png
+   47.881    48.048  1435  1439   spiral-eyes.png
+   48.048    48.215  1440  1444   zzz.png
+   48.215    48.382  1445  1449   phone.png
+   48.382    48.548  1450  1454   sob.png
+   48.548    48.715  1455  1459   zzz.png
+   48.715    48.882  1460  1464   phone.png
+   48.882    49.049  1465  1469   sad-face.png
+   49.049    49.216  1470  1474   zzz.png
+   49.216    49.383  1475  1479   phone.png
+   49.383    49.550  1480  1484   spiral-eyes.png
+   49.550    49.716  1485  1489   zzz.png
+   49.716    49.883  1490  1494   phone.png
+   49.883    49.983  1495  1497   neutral.png
+   49.983    50.684  1498  1518   dotted-face.png
+   50.684    53.787  1519  1611   bed-dashed.png
+   53.787    55.889  1612  1674   fog.png
+   55.889    57.858  1675  1733   "where did you go"
+   57.858    58.225  1734  1744   q-red.png
+   58.225    58.525  1745  1753   q-black.png
+   58.525    60.093  1754  1800   "when you walked away?"
+   60.093    60.294  1801  1806   door.png
+   60.460    60.661  1812  1817   foot.png
+   60.827    61.028  1823  1828   foot.png
+   61.194    61.395  1834  1839   foot.png
+   61.595    61.795  1846  1851   foot.png
+   61.995    64.531  1858  1933   "there was so"
+   64.531    64.965  1934  1946   "there was so\nmuch"
+   64.965    65.699  1947  1968   "there was so\nmuch more"
+   65.699    66.099  1969  1980   "there was so\nmuch more to"
+   66.099    66.466  1981  1991   "there was so\nmuch more to say"
+   66.466    66.867  1992  2003   hour0.png
+   66.867    67.234  2004  2014   hour1.png
+   67.234    67.601  2015  2025   hour2.png
+   67.601    68.001  2026  2037   hour3.png
+   68.001    71.705  2038  2148   "couldn't tell how high\nthe trees "
+   71.705    71.805  2149  2151   window.png
+   71.905    72.005  2155  2157   bed.png
+   72.105    72.205  2161  2163   phone-arrow.png
+   72.306    72.406  2167  2169   battery.png
+   72.472    72.573  2172  2174   window.png
+   72.639    72.739  2177  2179   bed.png
+   72.839    72.940  2183  2185   phone-arrow.png
+   73.040    73.140  2189  2191   battery.png
+   73.206    73.307  2194  2196   window.png
+   73.407    73.507  2200  2202   bed.png
+   73.607    73.707  2206  2208   phone-arrow.png
+   73.807    77.711  2212  2328   "I HAVEN’T GONE OUTSIDE\nFOR QUITE "
+   77.711    77.811  2329  2331   house.png
+   77.911    78.011  2335  2337   evergreen.png
+   78.111    78.211  2341  2343   tree.png
+   78.312    78.412  2347  2349   palm.png
+   78.478    78.612  2352  2355   house.png
+   78.645    78.779  2357  2360   evergreen.png
+   78.845    79.012  2363  2367   tree.png
+   79.046    79.179  2369  2372   palm.png
+   79.212    79.379  2374  2378   house.png
+   79.413    79.546  2380  2383   evergreen.png
+   79.579    79.746  2385  2389   tree.png
+   79.780    79.947  2391  2395   house-broken.png
+   79.980    80.147  2397  2401   evergreen.png
+   80.180    80.314  2403  2406   tree.png
+   80.347    80.514  2408  2412   palm.png
+   80.547    80.681  2414  2417   house-broken.png
+   80.714    80.948  2419  2425   door.png
+   81.114    81.348  2431  2437   door.png
+   81.481    81.715  2442  2448   door.png
+   81.848    82.082  2453  2459   door.png
+   82.215    82.449  2464  2470   lock.png
+   82.616    82.849  2476  2482   unlock.png
+   82.983    83.216  2487  2493   lock.png
+   83.350    83.584  2498  2504   unlock.png
+   83.717    83.951  2509  2515   case-black.png
+   84.117    84.351  2521  2527   runner-black.png
+   84.484    84.718  2532  2538   luggage.png
+   84.851    85.085  2543  2549   runner.png
+   85.218    85.452  2554  2560   taxi.png
+   85.619    85.852  2566  2572   seat.png
+   85.986    86.219  2577  2583   takeoff.png
+   86.353    86.587  2588  2594   landing.png
+   86.720    86.954  2599  2605   railway.png
+   87.087    87.321  2610  2616   motorway.png
+   87.454    87.688  2621  2627   tram.png
+   87.854    88.088  2633  2639   mtn-rail.png
+   88.221    88.455  2644  2650   mtn-black.png
+   88.588    88.822  2655  2661   mtn.png
+   88.989    89.222  2667  2673   bldg-black.png
+   89.356    89.590  2678  2684   bldg.png
+   89.723    89.957  2689  2695   moai-black.png
+   90.090    90.324  2700  2706   moai.png
+   90.490    90.724  2712  2718   tower-black.png
+   90.857    91.091  2723  2729   tower.png
+   91.224    91.458  2734  2740   castle-black.png
+   91.591    91.825  2745  2751   castle.png
+   91.992    92.225  2757  2763   volcano-black.png
+   92.359    92.593  2768  2774   volcano.png
+   92.726    92.926  2779  2784   earth-s00.png
+   92.926    93.093  2785  2789   earth-s01.png
+   93.093    93.293  2790  2795   earth-s02.png
+   93.293    93.493  2796  2801   earth-s03.png
+   93.493    93.694  2802  2807   earth-s04.png
+   93.694    93.860  2808  2812   earth-s05.png
+   93.860    94.061  2813  2818   earth-s06.png
+   94.061    94.261  2819  2824   earth-s07.png
+   94.261    94.428  2825  2829   earth-s08.png
+   94.428    94.594  2830  2834   earth-s09.png
+   94.594    94.795  2835  2840   earth-s10.png
+   94.795    94.995  2841  2846   earth-s11.png
+   94.995    95.195  2847  2852   earth-s12.png
+   95.195    95.362  2853  2857   earth-s13.png
+   95.362    95.562  2858  2863   earth-s14.png
+   95.562    95.762  2864  2869   earth-s15.png
+   95.762    95.963  2870  2875   sun.png
+   95.963    96.163  2876  2881   sun-cloud.png
+   96.163    96.563  2882  2893   sun-big-cloud.png
+   96.563    96.763  2894  2899   cloud.png
+   96.763    96.930  2900  2904   rain-only.png
+   96.930    97.097  2905  2909   storm-rain.png
+   97.097    97.230  2910  2913   cloud-zap.png
+   97.230    97.431  2914  2919   zap.png
+   97.431    97.597  2920  2924   zap-black.png
+   97.597    97.798  2925  2930   zap.png
+   97.798    97.965  2931  2935   zap-black.png
+   97.965    98.165  2936  2941   zap.png
+   98.165    98.332  2942  2946   zap-black.png
+   98.332    98.532  2947  2952   zap.png
+   98.532    98.732  2953  2958   zap-black.png
+   98.732    98.932  2959  2964   sun.png
+   98.932    99.132  2965  2970   sun-cloud.png
+   99.132    99.533  2971  2982   sun-big-cloud.png
+   99.533    99.733  2983  2988   cloud.png
+   99.733    99.900  2989  2993   rain-only.png
+   99.900   100.067  2994  2998   storm-rain.png
+  100.067   100.200  2999  3002   cloud-zap.png
+  100.200   100.400  3003  3008   zap.png
+  100.400   100.567  3009  3013   zap-black.png
+  100.567   100.767  3014  3019   zap.png
+  100.767   100.934  3020  3024   zap-black.png
+  100.934   101.134  3025  3030   zap.png
+  101.134   101.301  3031  3035   zap-black.png
+  101.301   101.501  3036  3041   zap.png
+  101.501   101.702  3042  3047   zap-black.png
+  101.702   101.902  3048  3053   droplet.png
+  101.902   102.102  3054  3059   wave.png
+  102.102   102.302  3060  3065   droplet.png
+  102.302   102.502  3066  3071   wave.png
+  102.502   102.703  3072  3077   droplet.png
+  102.703   102.869  3078  3082   sob.png
+  102.869   103.036  3083  3087   droplet.png
+  103.036   103.203  3088  3092   sob.png
+  103.203   103.403  3093  3098   wave.png
+  103.403   103.570  3099  3103   sob.png
+  103.570   103.770  3104  3109   wave.png
+  103.770   104.004  3110  3116   "I"
+  104.004   104.304  3117  3125   "WANNA"
+  104.304   104.705  3126  3137   "FLY"
+  104.705   104.972  3138  3145   "OFF"
+  104.972   105.272  3146  3154   "THE"
+  105.272   105.606  3155  3164   "DEEP"
+  105.606   106.239  3165  3183   "END"
+  106.239   106.873  3184  3202   eagle-black.png
+  106.873   107.207  3203  3212   "SO"
+  107.207   107.708  3213  3227   "SO SO"
+  107.708   107.874  3228  3232   "OFF THE\nDEEP END"
+  108.041   108.208  3238  3242   "OFF THE\nDEEP END"
+  108.375   108.542  3248  3252   "OFF THE\nDEEP END"
+  108.709   108.875  3258  3262   "OFF THE\nDEEP END"
+  109.042   109.209  3268  3272   knife-black.png
+  109.209   109.376  3273  3277   dagger-black.png
+  109.376   109.543  3278  3282   axe-black.png
+  109.543   109.710  3283  3287   dynamite-black.png
+  109.710   109.843  3288  3291   swords-black.png
+  109.843   110.477  3292  3310   "I JUST\nWANNA"
+  110.477   111.044  3311  3327   "KEEPIT"
+  111.044   111.211  3328  3332   anim:hundred-black×2
+  111.211   111.378  3333  3337   anim:hundred-black×2
+  111.378   111.545  3338  3342   anim:hundred-black×2
+  111.545   111.712  3343  3347   anim:hundred-black×2
+  111.712   111.878  3348  3352   anim:hundred-black×2
+  111.878   112.045  3353  3357   anim:hundred-black×2
+  112.045   112.212  3358  3362   anim:hundred-black×2
+  112.212   112.379  3363  3367   anim:hundred-black×2
+  112.379   112.546  3368  3372   anim:hundred-black×2
+  112.546   112.746  3373  3378   anim:hundred-black×2
+  112.746   112.913  3379  3383   "I"
+  112.913   113.080  3384  3388   "DONT"
+  113.080   113.246  3389  3393   "WAN"
+  113.246   113.413  3394  3398   "WANNA"
+  113.413   113.580  3399  3403   "SELLP"
+  113.580   113.747  3404  3408   "IN"
+  113.747   113.914  3409  3413   "I"
+  113.914   114.081  3414  3418   "DONT"
+  114.081   114.247  3419  3423   "WAN"
+  114.247   114.414  3424  3428   "WANNA"
+  114.414   114.581  3429  3433   "SELLP"
+  114.581   114.748  3434  3438   "IN"
+  114.748   114.915  3439  3443   "NO"
+  114.915   115.082  3444  3448   "MORE"
+  115.082   115.248  3449  3453   "NO"
+  115.248   115.415  3454  3458   "MORE"
+  115.415   115.582  3459  3463   "NO"
+  115.582   115.749  3464  3468   "MORE"
+  115.749   115.916  3469  3473   "NO"
+  115.916   116.083  3474  3478   "MORE"
+  116.083   116.249  3479  3483   "NO"
+  116.249   116.416  3484  3488   "MORE"
+  116.416   116.583  3489  3493   "NO"
+  116.583   116.683  3494  3496   "MORE"
+  116.683   116.850  3497  3501   "NOW IM BLEEDING"
+  117.017   117.184  3507  3511   "NOW IM BLEEDING"
+  117.351   117.517  3517  3521   "NOW IM BLEEDING"
+  117.684   117.851  3527  3531   "NOW IM BLEEDING"
+  118.018   118.185  3537  3541   heart-red.png
+  118.185   118.352  3542  3546   blood.png
+  118.352   118.518  3547  3551   heart-red.png
+  118.518   118.685  3552  3556   blood.png
+  118.685   118.852  3557  3561   heart-red.png
+  118.852   119.019  3562  3566   "AND"
+  119.019   119.186  3567  3571   "EVERYTHING"
+  119.186   119.353  3572  3576   "AND\nEVERYTHINGEVERYTHING"
+  119.353   119.519  3577  3581   "AND\nEVERYTHINGEVERYTHING"
+  119.519   119.686  3582  3586   "EVERYTHINGEVERYTHINGEVERYTHING\nAN"
+  119.686   119.853  3587  3591   "EVERYTHINGEVERYTHINGEVERYTHING\nAN"
+  119.853   120.020  3592  3596   "EVERYTHINGEVERYTHINGEVERYTHING\nAN"
+  120.020   120.187  3597  3601   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  120.187   120.354  3602  3606   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  120.354   120.520  3607  3611   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  120.520   120.687  3612  3616   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  120.687   120.854  3617  3621   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  120.854   121.021  3622  3626   "EATINGREPEATINGREPEATINGREPE\nREPE"
+  121.021   121.188  3627  3631   "EATINGREPEATINGREPEATINGREPE\nREPE" + heart-red.png
+  121.188   121.355  3632  3636   "EATINGREPEATINGREPEATINGREPE\nREPE" + heart-red.png
+  121.355   121.521  3637  3641   "EATINGREPEATINGREPEATINGREPE\nREPE" + heart-red.png
+  121.521   121.688  3642  3646   "GREPEATINGREPEATINGREPEATINGR" + heart-red.png
+  121.688   121.855  3647  3651   "GREPEATINGREPEATINGREPEATINGR" + heart-fire.png
+  121.855   122.022  3652  3656   anim:heart-red×2
+  122.022   122.189  3657  3661   anim:heart-red×2
+  122.189   122.356  3662  3666   anim:heart-red×2
+  122.356   122.522  3667  3671   anim:heart-red×2
+  122.522   123.523  3672  3701   "WITHOUT YOU\nNEAR ME"
+  123.523   123.690  3702  3706   anim:fire×2
+  123.690   123.857  3707  3711   anim:fire×2
+  123.857   124.024  3712  3716   anim:fire×2
+  124.024   124.191  3717  3721   anim:fire×2
+  124.191   124.358  3722  3726   anim:fire×2
+  124.358   124.524  3727  3731   disc-black.png
+  124.524   124.691  3732  3736   fire.png
+  124.691   124.858  3737  3741   disc-black.png
+  124.858   125.025  3742  3746   hole.png
+  125.025   125.192  3747  3751   disc-black.png
+  125.192   125.359  3752  3756   hole.png
+  125.359   125.525  3757  3761   rabbit-black.png
+  125.525   125.692  3762  3766   hole.png
+  125.692   125.859  3767  3771   rabbit-black.png
+  125.859   126.026  3772  3776   hole.png
+  126.026   126.193  3777  3781   anim:rspir0×6
+  126.193   126.360  3782  3786   anim:rspir0×6
+  126.360   126.526  3787  3791   anim:rspir0×6
+  126.526   126.693  3792  3796   anim:rspir0×6
+  126.693   126.860  3797  3801   anim:rspir0×6
+  126.860   127.027  3802  3806   anim:rspir0×6
+  127.027   127.260  3807  3813   anim:rspir0×6
+  127.894   128.295  3833  3844   "cause"
+  128.295   130.230  3845  3902   "I miss you"
+  130.230   131.732  3903  3947   cloud-black.png
+  131.732   134.001  3948  4015   melt-blue.png
+  134.001   134.301  4016  4024   "yeah"
+  134.301   136.236  4025  4082   "i miss you"
+  136.236   137.404  4083  4117   sob-blue.png
+  137.404   139.940  4118  4193   "i do"
+  139.940   142.242  4194  4262   "i don’t want too"
+  142.242   143.744  4263  4307   sob-blue.png
+  143.744   146.013  4308  4375   blob-black.png
+  146.013   146.246  4376  4382   "but"
+  146.246   149.082  4383  4467   "i miss you"
+  149.082   151.618  4468  4543   "i do"
+  152.052   152.285  4557  4563   "YEAH"
+  152.285   152.753  4564  4577   "I MISS YOU"
+  152.753   153.086  4578  4587   plant.png
+  153.120   153.487  4589  4599   "I MISS YOU"
+  153.487   153.854  4600  4610   dash.png
+  153.854   154.221  4611  4621   "I MISS YOU"
+  154.221   154.588  4622  4632   leaf.png
+  154.588   154.955  4633  4643   "I MISS YOU"
+  154.955   155.322  4644  4654   fallen.png
+  155.322   155.689  4655  4665   "I MISS YOU"
+  155.689   156.089  4666  4677   web.png
+  156.089   156.456  4678  4688   "I MISS YOU"
+  156.456   156.857  4689  4700   spider.png
+  156.857   157.224  4701  4711   "I MISS YOU"
+  157.991   158.225  4735  4741   "YEAH"
+  158.225   158.692  4742  4755   "I MISS YOU"
+  158.692   159.059  4756  4766   "I MISS"
+  159.059   159.426  4767  4777   "I MISS YOU"
+  159.426   159.793  4778  4788   "I MISS"
+  159.793   160.160  4789  4799   "I MISS YOU" + "I MISS"
+  160.160   160.527  4800  4810   "I MISS YOU"
+  160.527   160.894  4811  4821   "I MISS YOU" + "I MISS"
+  160.894   161.261  4822  4832   "I MISS"
+  161.261   161.628  4833  4843   "I"
+  161.628   163.263  4844  4892   "DO"
+  163.263   163.397  4893  4896   light.png
+  163.397   163.530  4897  4900   car-side.png
+  163.530   163.663  4901  4904   car-front.png
+  163.663   163.797  4905  4908   flag.png
+  163.797   163.930  4909  4912   trophy.png
+  163.930   166.233  4913  4981   "i don’t want too"
+  166.233   166.400  4982  4986   anim:pensive×2
+  166.400   166.566  4987  4991   anim:pensive×2
+  166.566   166.733  4992  4996   anim:pensive×2
+  166.733   166.900  4997  5001   anim:pensive×2
+  166.900   167.067  5002  5006   anim:pensive×2
+  167.067   167.234  5007  5011   anim:pensive×2
+  167.234   167.401  5012  5016   anim:pensive×2
+  167.401   167.534  5017  5020   sob.png
+  167.534   167.701  5021  5025   anim:calendar×2
+  167.701   167.868  5026  5030   anim:calendar×2
+  167.868   168.035  5031  5035   anim:calendar×2
+  168.035   168.201  5036  5040   anim:calendar×2
+  168.201   168.368  5041  5045   anim:calendar×2
+  168.368   168.535  5046  5050   anim:calendar×2
+  168.535   168.702  5051  5055   anim:calendar×2
+  168.702   168.835  5056  5059   anim:calendar×2
+  168.835   169.002  5060  5064   anim:phone-call×2
+  169.002   169.169  5065  5069   anim:phone-call×2
+  169.169   169.336  5070  5074   anim:phone-call×2
+  169.336   169.503  5075  5079   anim:phone-call×2
+  169.503   169.669  5080  5084   anim:phone-call×2
+  169.669   169.836  5085  5089   anim:phone-call×2
+  169.836   169.936  5090  5092   anim:phone-call×2
+  169.936   170.170  5093  5099   "but"
+  170.170   170.637  5100  5113   "i"
+  171.004   171.371  5125  5135   "i miss"
+  171.738   172.105  5147  5157   "i miss you"
+  172.105   172.472  5158  5168   wind-face.png
+  172.472   172.839  5169  5179   "i miss you"
+  172.839   173.206  5180  5190   storm-rain.png
+  173.206   173.573  5191  5201   "i do"
+  173.573   173.940  5202  5212   zap.png
+  173.940   174.307  5213  5223   "i do"
+  174.307   174.674  5224  5234   zap.png
+  174.674   175.042  5235  5245   "i do"
+  175.909   177.778  5272  5327   "YEA\nI MISS YOU"
+  177.778   178.211  5328  5340   "YEA\nI MISS YOU" + "(much more to say)"
+  178.211   178.311  5341  5343   anim:moon0×8 + "(much more to say)"
+  178.311   178.412  5344  5346   anim:moon0×8 + "(much more to say)"
+  178.412   178.512  5347  5349   anim:moon0×8 + "(much more to say)"
+  178.512   178.612  5350  5352   anim:moon0×8 + "(much more to say)"
+  178.612   178.812  5353  5358   anim:moon0×8 + "(much more to say)"
+  178.812   178.912  5359  5361   anim:moon0×8 + "(much more to say)"
+  178.912   179.012  5362  5364   anim:moon0×8 + "(much more to say)"
+  179.012   179.112  5365  5367   anim:moon0×8 + "(much more to say)"
+  179.112   179.212  5368  5370   anim:moon0×8 + "(much more to say)"
+  179.212   179.312  5371  5373   anim:moon0×8 + "(much more to say)"
+  179.312   179.413  5374  5376   anim:moon0×8 + "(much more to say)"
+  179.413   179.613  5377  5382   anim:moon0×8 + "(much more to say)"
+  179.613   179.713  5383  5385   anim:moon0×8 + "(much more to say)"
+  179.713   179.813  5386  5388   anim:moon0×8
+  179.813   179.913  5389  5391   anim:moon0×8
+  179.913   180.013  5392  5394   anim:moon0×8
+  180.013   180.113  5395  5397   anim:moon0×8
+  180.113   180.213  5398  5400   anim:moon0×8
+  180.213   180.313  5401  5403   anim:moon0×8
+  180.313   180.414  5404  5406   anim:moon0×8
+  180.414   180.514  5407  5409   anim:moon0×8
+  180.514   180.614  5410  5412   anim:moon0×8
+  180.614   180.714  5413  5415   anim:moon0×8
+  180.714   180.814  5416  5418   anim:moon0×8
+  180.814   180.914  5419  5421   anim:moon0×8 + "(much more to say)"
+  180.914   181.014  5422  5424   anim:moon0×8 + "(much more to say)"
+  181.014   181.214  5425  5430   anim:moon0×8 + "(much more to say)"
+  181.214   181.314  5431  5433   anim:moon0×8 + "(much more to say)"
+  181.314   181.415  5434  5436   anim:moon0×8 + "(much more to say)"
+  181.415   181.515  5437  5439   anim:moon0×8 + "(much more to say)"
+  181.515   181.615  5440  5442   anim:moon0×8 + "(much more to say)"
+  181.615   181.715  5443  5445   anim:moon0×8 + "(much more to say)"
+  181.715   181.815  5446  5448   anim:moon0×8 + "(much more to say)"
+  181.815   181.915  5449  5451   anim:moon0×8 + "(much more to say)"
+  181.915   182.282  5452  5462   "YEA"
+  182.282   182.616  5463  5472   "I"
+  182.616   183.350  5473  5494   "I MISS"
+  183.350   183.750  5495  5506   "I MISS YOU"
+  183.750   184.151  5507  5518   "I MISS YOU" + "YOU"
+  184.151   184.518  5519  5529   "I MISS YOU" + "YOU" + "YOU"
+  184.518   184.851  5530  5539   "I MISS YOU" + "YOU" + "YOU" + "YOU"
+  184.851   184.951  5540  5542   crescent.png
+  184.951   185.052  5543  5545   crescent.png
+  185.052   185.152  5546  5548   crescent.png
+  185.152   185.252  5549  5551   crescent.png
+  185.252   185.318  5552  5553   crescent.png
+  185.318   185.419  5554  5556   "I DO"
+  185.419   185.519  5557  5559   phone.png
+  185.519   185.619  5560  5562   "I DO"
+  185.619   185.719  5563  5565   spiral-eyes.png
+  185.719   185.819  5566  5568   "I DO"
+  185.819   185.919  5569  5571   zzz.png
+  185.919   186.019  5572  5574   "I DO"
+  186.019   186.119  5575  5577   phone.png
+  186.119   186.219  5578  5580   "I DO"
+  186.219   186.319  5581  5583   sob.png
+  186.319   186.420  5584  5586   "I DO"
+  186.420   186.520  5587  5589   zzz.png
+  186.520   186.620  5590  5592   "I DO"
+  186.620   186.720  5593  5595   phone.png
+  186.720   186.820  5596  5598   "I DO"
+  186.820   186.920  5599  5601   sad-face.png
+  186.920   187.020  5602  5604   "I DO"
+  187.020   187.120  5605  5607   zzz.png
+  187.120   187.220  5608  5610   "I DO"
+  187.220   187.320  5611  5613   phone.png
+  187.320   187.421  5614  5616   "I DO"
+  187.421   187.521  5617  5619   spiral-eyes.png
+  187.521   187.621  5620  5622   "I DO"
+  187.621   187.721  5623  5625   neutral.png
+  187.721   187.821  5626  5628   dotted-face.png
+  187.821   187.921  5629  5631   neutral.png
+  187.921   188.021  5632  5634   dotted-face.png
+  188.021   190.223  5635  5700   i-dont-want-dotted.png
+  190.223   191.491  5701  5738   bed-dashed.png
+  191.491   193.226  5739  5790   miss-you-blur.png
+  193.226   193.326  5791  5793   "?"
+  193.326   193.427  5794  5796   "?"
+  193.427   193.527  5797  5799   "?"
+  193.527   193.627  5800  5802   "?"
+  193.627   193.727  5803  5805   "?"
+  193.727   193.827  5806  5808   "?"
+  193.827   193.927  5809  5811   "?"
+  193.927   194.027  5812  5814   "?"
+  194.027   194.127  5815  5817   foot.png
+  194.127   194.194  5818  5819   foot.png
+  194.194   194.261  5820  5821   foot.png
+  194.261   194.327  5822  5823   foot.png
+  194.327   194.361  5824  5824   foot.png
+  194.361   196.196  5825  5879   "i miss you"
+  196.196   196.296  5880  5882   hourglass.png
+  196.296   196.396  5883  5885   hourglass.png
+  196.396   196.496  5886  5888   hourglass.png
+  196.496   196.596  5889  5891   hourglass.png
+  196.596   196.696  5892  5894   hourglass.png
+  196.696   196.797  5895  5897   hourglass.png
+  196.797   196.897  5898  5900   hourglass.png
+  196.897   197.831  5901  5928   "YEA" + "i miss you"
+  197.831   200.000  5929  5993   "YEA" + "i miss you"
+  200.000   200.100  5994  5996   runner-black.png + "(where'd you go)"
+  200.100   200.200  5997  5999   runner-black.png + "(where'd you go)"
+  200.200   200.300  6000  6002   runner-black.png + "(where'd you go)"
+  200.300   200.400  6003  6005   runner-black.png + "(where'd you go)"
+  200.400   200.500  6006  6008   runner-black.png + "(where'd you go)"
+  200.500   200.600  6009  6011   runner-black.png + "(where'd you go)"
+  200.600   200.801  6012  6017   runner-black.png + "(where'd you go)"
+  200.801   200.901  6018  6020   runner-black.png + "(where'd you go)"
+  200.901   201.001  6021  6023   runner-black.png + "(where'd you go)"
+  201.001   201.101  6024  6026   runner-black.png + "(where'd you go)"
+  201.101   201.201  6027  6029   runner-black.png + "(where'd you go)"
+  201.201   201.301  6030  6032   runner-black.png + "(where'd you go)"
+  201.301   201.401  6033  6035   runner-black.png + "(where'd you go)"
+  201.401   201.501  6036  6038   runner-black.png + "(where'd you go)"
+  201.501   201.601  6039  6041   runner-black.png + "(where'd you go)"
+  201.601   201.702  6042  6044   runner-black.png + "(where'd you go)"
+  201.702   201.802  6045  6047   runner-black.png + "(where'd you go)"
+  201.802   201.902  6048  6050   runner-black.png + "(where'd you go)"
+  201.902   201.935  6051  6051   runner-black.png + "(where'd you go)"
+  201.935   202.002  6052  6053   bldg-black.png
+  202.002   202.102  6054  6056   bldg-black.png
+  202.102   202.202  6057  6059   bldg-black.png
+  202.202   202.302  6060  6062   tower-black.png
+  202.302   202.402  6063  6065   tower-black.png
+  202.402   202.502  6066  6068   tower-black.png
+  202.502   202.602  6069  6071   tower-black.png
+  202.602   202.702  6072  6074   earth1.png
+  202.702   202.803  6075  6077   earth1.png
+  202.803   202.903  6078  6080   earth1.png
+  202.903   203.003  6081  6083   earth1.png
+  203.003   203.103  6084  6086   earth1.png
+  203.103   203.203  6087  6089   earth1.png
+  203.203   203.303  6090  6092   earth2.png
+  203.303   203.403  6093  6095   earth2.png
+  203.403   203.503  6096  6098   earth2.png
+  203.503   203.603  6099  6101   earth2.png
+  203.603   203.703  6102  6104   earth2.png
+  203.703   203.804  6105  6107   earth3.png
+  203.804   203.904  6108  6110   earth3.png
+  203.904   204.004  6111  6113   earth3.png
+  204.004   204.204  6114  6119   earth3.png
+  204.204   204.304  6120  6122   earth3.png
+  204.304   204.404  6123  6125   storm-rain.png
+  204.404   204.504  6126  6128   storm-rain.png
+  204.504   204.604  6129  6131   storm-rain.png
+  204.604   204.704  6132  6134   zap.png
+  204.704   204.805  6135  6137   zap.png
+  204.805   204.905  6138  6140   zap-black.png
+  204.905   205.005  6141  6143   zap-black.png
+  205.005   205.105  6144  6146   zap-black.png
+  205.105   205.205  6147  6149   wave.png
+  205.205   205.305  6150  6152   droplet.png
+  205.305   205.405  6153  6155   sob.png
+  205.405   205.505  6156  6158   droplet.png
+  205.505   205.605  6159  6161   "yea"
+  205.605   205.706  6162  6164   "yea"
+  205.706   205.806  6165  6167   "yea"
+  205.806   205.939  6168  6171   "yea"
+  205.939   206.773  6172  6196   "yea"
+  206.773   208.241  6197  6240   "i miss you"
+  208.241   208.341  6241  6243   fire.png
+  208.341   208.442  6244  6246   fire.png
+  208.442   208.542  6247  6249   fire.png
+  208.542   208.642  6250  6252   fire.png
+  208.642   208.742  6253  6255   fire.png
+  208.742   208.842  6256  6258   fire.png
+  208.842   208.942  6259  6261   fire.png
+  208.942   209.042  6262  6264   fire.png
+  209.042   209.142  6265  6267   fire.png
+  209.142   209.242  6268  6270   fire.png
+  209.242   209.342  6271  6273   fire.png
+  209.342   209.443  6274  6276   fire.png
+  209.443   209.543  6277  6279   hole.png
+  209.543   209.643  6280  6282   disc-black.png
+  209.643   209.743  6283  6285   hole.png
+  209.743   214.915  6286  6440   rabbit-black.png
