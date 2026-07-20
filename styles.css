@@ -50,9 +50,9 @@ body.playing { overscroll-behavior: none; touch-action: none; }
 /* ---------------- THE EMOJI CURSOR ----------------
    During the show the real cursor is hidden; the video's emoji —
    ringed in a thin circle — follows the pointer instead. */
-body.playing { cursor: none; }
-body.playing .cue { cursor: none; }
-body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
+/* hide the real cursor everywhere during the show — the universal rule + !important
+   beats any child override AND survives the pointer leaving and re-entering the window */
+body.playing, body.playing *, body.playing *::before, body.playing *::after { cursor: none !important; }
 .emoji-cursor {
   position: fixed;
   left: 0; top: 0;

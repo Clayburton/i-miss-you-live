@@ -446,6 +446,7 @@
     running = false;
     stage.classList.remove("is-live");
     document.body.classList.remove("playing");
+    document.body.style.cursor = "";      // release the forced hide so the end-card buttons show a cursor
     cursorEl.classList.remove("is-on");
     endcard.hidden = false;
     requestAnimationFrame(function () { endcard.classList.add("is-visible"); });
@@ -581,6 +582,19 @@
   window.addEventListener("mouseout", function (e) {
     if (!e.relatedTarget) { mouse.inside = false; cursorEl.classList.remove("is-on"); }
   });
+  // re-entering the window: some browsers don't re-apply `cursor:none` until forced, so the
+  // OS arrow flashes on top of the emoji. Re-assert it inline (forces a recompute) and bring
+  // the emoji cursor back the same instant so there's never a gap.
+  function reassertHidden(e) {
+    if (!running) return;
+    mouse.x = e.clientX; mouse.y = e.clientY; mouse.inside = true;
+    document.body.style.cursor = "none";
+    moveCursor();
+    if (cursorSrc) cursorEl.classList.add("is-on");
+  }
+  window.addEventListener("pointerover", reassertHidden);
+  window.addEventListener("pointerenter", reassertHidden);
+  document.addEventListener("mouseenter", reassertHidden);
 
   stage.addEventListener("pointerdown", function (e) {
     if (!running) return;
