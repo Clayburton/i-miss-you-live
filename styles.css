@@ -169,16 +169,21 @@ body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
   transition: transform .18s ease, opacity .3s ease;
 }
 /* while the emoji deck preloads, the arrow breathes at low opacity */
-.playbtn.is-loading { opacity: calc(0.18 + 0.5 * var(--load, 0)); }
 .playbtn:hover { transform: scale(1.08); }
 .playbtn:active { transform: scale(0.96); }
 .playbtn:focus-visible { outline: 2px solid #111; outline-offset: 6px; border-radius: 4px; }
 .playbtn__tri {
-  width: 0; height: 0;
-  border-style: solid;
-  border-width: clamp(22px, 3.6vw, 40px) 0 clamp(22px, 3.6vw, 40px) clamp(34px, 5.6vw, 62px);
-  border-color: transparent transparent transparent #111;
+  width: clamp(34px, 5.6vw, 62px);
+  height: auto;
+  display: block;
+  overflow: visible;
 }
+.playbtn__tri .tri-o { fill: none; stroke: #111; stroke-width: 2; stroke-linejoin: round; }
+.playbtn__tri .tri-f { fill: #111; }
+/* while it loads the button can't be clicked — the triangle filling in IS the progress bar */
+.playbtn.is-loading { pointer-events: none; cursor: default; }
+.playbtn.is-ready .playbtn__tri { animation: triPop .55s cubic-bezier(.22, 1.61, .36, 1); }
+@keyframes triPop { 0% { transform: scale(1); } 38% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
 /* transient sync-nudge readout */
 .toast {

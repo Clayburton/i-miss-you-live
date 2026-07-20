@@ -286,6 +286,27 @@
      appears late on first play and swaps flash the previous frame. The play
      arrow stays dimmed until the deck is fully warm. */
   const PRELOADED = new Map();              // src -> decoded HTMLImageElement (held so nothing is evicted)
+  /* ---------- the play triangle IS the loading bar ----------
+     A hairline outline appears immediately; real load progress fills it
+     black left-to-right; at 100% it settles with a pop and goes live. */
+  const triRect = document.getElementById("triRect");
+  let triShown = 0, triReal = 0, triTrickle = 0, triReady = false;
+  function triProgress(p) { triReal = Math.max(triReal, Math.min(1, p || 0)); }
+  const triTimer = setInterval(function () {
+    triTrickle = Math.min(triTrickle + 0.004, 0.3);       // always alive, never lies far ahead
+    const t = Math.max(triReal, triTrickle);
+    triShown += (t - triShown) * 0.14;
+    if (triReal >= 1 && triShown > 0.985) triShown = 1;
+    if (triRect) triRect.setAttribute("width", (triShown * 62).toFixed(2));
+    if (triShown >= 1) {
+      clearInterval(triTimer);
+      triReady = true;
+      playBtn.classList.remove("is-loading");
+      playBtn.classList.add("is-ready");
+    }
+  }, 40);
+  window.__tri = triProgress;
+
   let assetsReady = false;
   (function preload() {
     const srcs = new Set();
@@ -298,10 +319,10 @@
     playBtn.classList.add("is-loading");
     const tick = function () {
       done++;
-      playBtn.style.setProperty("--load", (done / total));
+      triProgress(done / total);
       if (done >= total) {
         assetsReady = true;
-        playBtn.classList.remove("is-loading");
+        triProgress(1);
       }
     };
     srcs.forEach(function (s) {
