@@ -159,6 +159,7 @@ body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
 }
 
 .playbtn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -166,12 +167,60 @@ body.playing .endcard__link, body.playing .endcard__btn { cursor: none; }
   background: none;
   border: none;
   cursor: pointer;
+  touch-action: none;            /* press-and-hold drag must not scroll the page */
   transition: transform .18s ease, opacity .3s ease;
 }
-/* while the emoji deck preloads, the arrow breathes at low opacity */
 .playbtn:hover { transform: scale(1.08); }
 .playbtn:active { transform: scale(0.96); }
+.playbtn.is-holding { transition: none; }
+.playbtn.is-holding:hover, .playbtn.is-holding:active { transform: none; }  /* JS owns the transform mid-hold */
 .playbtn:focus-visible { outline: 2px solid #111; outline-offset: 6px; border-radius: 4px; }
+
+/* the charge ring that sweeps as you hold (2s → the show begins) */
+.playbtn__ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: clamp(104px, 17vw, 168px);
+  height: clamp(104px, 17vw, 168px);
+  transform: translate(-50%, -50%) rotate(-90deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.playbtn.is-holding .playbtn__ring { opacity: 1; }
+.playbtn__ring circle {
+  fill: none;
+  stroke: #111;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 289.03;      /* 2·π·46 */
+  stroke-dashoffset: 289.03;     /* empty; JS sweeps it to 0 over the hold */
+}
+
+/* '80s video-delay ghosts left behind as the arrow trails the finger */
+.play-echo { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.play-echo .echo {
+  position: absolute;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: clamp(22px, 3.6vw, 40px) 0 clamp(22px, 3.6vw, 40px) clamp(34px, 5.6vw, 62px);
+  border-color: transparent transparent transparent #111;
+  transform: translate(-64%, -50%) scale(1);
+  opacity: .34;
+  transition: opacity .62s ease, transform .62s ease;
+}
+.play-echo .echo.go { opacity: 0; transform: translate(-64%, -50%) scale(.66); }
+
+.landing__hint {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .28em;
+  font-size: clamp(9px, 1.1vw, 12px);
+  color: #8b8b8b;
+  margin-top: 2.4rem;
+  transition: color .2s ease, transform .2s ease;
+}
+.landing__hint.nudge { color: #111; transform: scale(1.06); }
 .playbtn__tri {
   width: clamp(34px, 5.6vw, 62px);
   height: auto;

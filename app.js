@@ -354,7 +354,92 @@
     requestAnimationFrame(frame);
   }
 
-  playBtn.addEventListener("click", start);
+  /* ---------- press-and-hold to begin, with an '80s video-delay drag ----------
+     Click and hold the arrow (drag it around — it lags behind your finger
+     and leaves echoes, like the trail in the song). A ring charges over 2s;
+     at full charge the show begins. Let go early and it eases back home. */
+  const playRing = document.getElementById("playRing");
+  const playEcho = document.getElementById("playEcho");
+  const playHint = document.querySelector(".landing__hint");
+  const HOLD_MS = 2000, RING_C = 289.03;
+  let holding = false, holdDone = false, holdStart = 0, holdRAF = 0, holdTimer = 0, lastEcho = 0;
+  let restCx = 0, restCy = 0, tgX = 0, tgY = 0, curX = 0, curY = 0;
+
+  function spawnEcho(px, py) {
+    const e = document.createElement("span");
+    e.className = "echo";
+    e.style.left = px + "px";
+    e.style.top = py + "px";
+    playEcho.appendChild(e);
+    requestAnimationFrame(function () { e.classList.add("go"); });
+    setTimeout(function () { e.remove(); }, 660);
+  }
+  function holdLoop(now) {                           // rAF drives only the VISUALS
+    if (!holding) return;
+    curX += (tgX - curX) * 0.16;                    // lag toward the finger = the delay
+    curY += (tgY - curY) * 0.16;
+    playBtn.style.transform = "translate(" + curX.toFixed(1) + "px," + curY.toFixed(1) + "px)";
+    if (now - lastEcho > 55 && (Math.abs(tgX - curX) > 3 || Math.abs(tgY - curY) > 3)) {
+      lastEcho = now;
+      spawnEcho(restCx + curX, restCy + curY);
+    }
+    const p = Math.min(1, (now - holdStart) / HOLD_MS);
+    if (playRing) playRing.style.strokeDashoffset = (RING_C * (1 - p)).toFixed(1);
+    holdRAF = requestAnimationFrame(holdLoop);
+  }
+  function beginHold(e) {
+    if (holding || holdDone || !playBtn.classList.contains("is-ready")) return;
+    e.preventDefault();
+    holding = true;
+    curX = curY = tgX = tgY = 0;
+    const r = playBtn.getBoundingClientRect();
+    restCx = r.left + r.width / 2;                  // rest centre (transform is 0 here)
+    restCy = r.top + r.height / 2;
+    tgX = e.clientX - restCx; tgY = e.clientY - restCy;
+    playBtn.classList.add("is-holding");
+    try { playBtn.setPointerCapture(e.pointerId); } catch (x) {}
+    holdStart = lastEcho = performance.now();
+    holdTimer = setTimeout(finishHold, HOLD_MS);    // the show begins on a real 2s timer (frame-independent)
+    holdRAF = requestAnimationFrame(holdLoop);
+  }
+  function moveHold(e) {
+    if (!holding) return;
+    tgX = e.clientX - restCx; tgY = e.clientY - restCy;
+  }
+  function endHoldStyles() { playBtn.style.transform = ""; playBtn.style.transition = ""; }
+  function cancelHold() {
+    if (!holding) return;
+    holding = false;
+    cancelAnimationFrame(holdRAF);
+    clearTimeout(holdTimer);
+    playBtn.classList.remove("is-holding");
+    if (playRing) playRing.style.strokeDashoffset = RING_C;
+    const quick = performance.now() - holdStart < 380;
+    playBtn.style.transition = "transform .42s cubic-bezier(.2,.8,.2,1)";
+    playBtn.style.transform = "translate(0,0)";
+    setTimeout(endHoldStyles, 440);
+    if (quick && playHint) {                        // tapped too fast — teach the hold
+      playHint.classList.add("nudge");
+      setTimeout(function () { playHint.classList.remove("nudge"); }, 480);
+    }
+  }
+  function finishHold() {
+    if (holdDone || !holding) return;
+    holdDone = true;
+    holding = false;
+    cancelAnimationFrame(holdRAF);
+    clearTimeout(holdTimer);
+    if (playRing) playRing.style.strokeDashoffset = 0;   // ring completes even if rAF was throttled
+    playBtn.classList.remove("is-holding");
+    playBtn.style.transition = "transform .26s cubic-bezier(.2,.9,.25,1.25)";
+    playBtn.style.transform = "translate(0,0)";
+    setTimeout(endHoldStyles, 280);
+    start();
+  }
+  playBtn.addEventListener("pointerdown", beginHold);
+  playBtn.addEventListener("pointermove", moveHold);
+  playBtn.addEventListener("pointerup", function () { if (!holdDone) cancelHold(); });
+  playBtn.addEventListener("pointercancel", function () { if (!holdDone) cancelHold(); });
 
   // end of song
   audio.addEventListener("ended", function () {
