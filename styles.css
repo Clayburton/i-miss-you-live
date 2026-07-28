@@ -135,6 +135,11 @@ body.playing, body.playing *, body.playing *::before, body.playing *::after { cu
   display: grid;
   place-items: center;
   transition: opacity .5s ease;
+  /* dragging the play arrow must not select the title / raise the iOS callout */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .landing.is-gone { opacity: 0; pointer-events: none; }
 

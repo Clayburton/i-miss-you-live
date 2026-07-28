@@ -362,6 +362,28 @@
   const playEcho = document.getElementById("playEcho");
   const playHint = document.querySelector(".landing__hint");
   const HOLD_MS = 2000, RING_C = 289.03;
+
+  /* iOS/Android will only start audio from a real user gesture. The show begins on a
+     2s timer, which is NOT the gesture — so play() was being rejected and the song
+     never started on a phone (desktop autoplay rules are lax, which is why it worked
+     there). Unlock the element here, synchronously inside pointerdown: a muted
+     play/pause marks it user-activated, so the delayed play() is allowed. */
+  let audioPrimed = false;
+  function primeAudio() {
+    if (audioPrimed) return;
+    audioPrimed = true;
+    const wasMuted = audio.muted;
+    audio.muted = true;
+    let p;
+    try { p = audio.play(); } catch (e) {}
+    const release = function () {
+      try { audio.pause(); audio.currentTime = 0; } catch (e) {}
+      audio.muted = wasMuted;
+    };
+    if (p && p.then) p.then(release, function () { audio.muted = wasMuted; });
+    else release();
+  }
+
   let holding = false, holdDone = false, holdStart = 0, holdRAF = 0, holdTimer = 0, lastEcho = 0;
   let restCx = 0, restCy = 0, tgX = 0, tgY = 0, curX = 0, curY = 0;
 
@@ -390,6 +412,7 @@
   function beginHold(e) {
     if (holding || holdDone || !playBtn.classList.contains("is-ready")) return;
     e.preventDefault();
+    primeAudio();          // MUST happen here, inside the real gesture (see primeAudio)
     holding = true;
     curX = curY = tgX = tgY = 0;
     const r = playBtn.getBoundingClientRect();
